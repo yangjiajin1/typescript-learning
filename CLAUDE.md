@@ -31,7 +31,7 @@
 ## 练习运行方式
 
 ```bash
-npm run <文件名相对路径>   # 等价于 npx tsx,直接运行 .ts 文件
+npx tsx <文件相对路径>     # 直接运行 .ts 文件(等价于 npm run run <路径>)
 npm run check             # tsc --noEmit 全量类型检查
 ```
 
