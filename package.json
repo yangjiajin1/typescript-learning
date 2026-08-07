@@ -1,0 +1,16 @@
+{
+  "name": "typescript-learning",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TypeScript 学习仓库(目标 B 档:能写出好类型)",
+  "scripts": {
+    "run": "tsx",
+    "check": "tsc --noEmit",
+    "watch": "tsc --noEmit --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "tsx": "^4.0.0",
+    "@types/node": "^20.0.0"
+  }
+}
