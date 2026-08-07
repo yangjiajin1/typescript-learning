@@ -1,6 +1,37 @@
 # TypeScript 学习仓库
 
-自学 TypeScript 的练习场——30 课从类型注解到 Vue 3 类型实战,目标是**能写出好类型**(泛型、联合类型、类型守卫、工具类型,`any` 用得克制)。
+> **本仓库是基于 [Claude Code](https://claude.com/claude-code) 的 AI 辅助学习项目**——由 Claude Code 担任陪练导师,30 课从类型注解到 Vue 3 类型实战,目标是**能写出好类型**(泛型、联合类型、类型守卫、工具类型,`any` 用得克制)。
+
+## 怎么使用(配合 Claude Code)
+
+这个仓库的学习机制依赖 Claude Code 的跨会话记忆系统(`CLAUDE.md` + `progress.md`),**每一步都通过和 Claude 对话完成**:
+
+**1. 准备环境**(只需一次)
+
+```bash
+npm install        # 安装依赖(typescript + tsx + @types/node)
+```
+
+**2. 每天开始学习**
+
+在 `typescript-learning` 目录下打开一个新的 Claude Code 会话,输入:
+
+```
+学习 TS 第 N 课
+```
+
+Claude 会自动读取 `progress.md` 和 `课程大纲.md` 里的规则与进度,进入本课教学流程:**讲解要点 → 你写练习 → Claude 审阅 → 自测提问 → 更新进度**。学完就关掉会话,明天开新会话说"学习 TS 第 N+1 课"继续,进度永不丢失。
+
+**3. 想多学一课?**
+
+在同一个会话里说"再学一课",Claude 会继续开下一课(每课 20-40 分钟,模块化设计,随时可停)。
+
+**4. 手动运行代码**(不经过 Claude 也可以)
+
+```bash
+npm run check      # 全量类型检查(tsc --noEmit)
+npm run <文件路径>  # 运行单个练习文件,如 npm run lessons/01-认识类型/exercise.ts
+```
 
 ## 学习路径
 
@@ -14,19 +45,9 @@
 
 完整大纲见 [`课程大纲.md`](课程大纲.md),每课含目标、练习、自测与官方文档链接。
 
-## 使用方式
+## 学习规则(Claude 必须遵守)
 
-```bash
-npm install        # 安装依赖(typescript + tsx + @types/node)
-npm run check      # 全量类型检查(tsc --noEmit)
-npm run <文件路径>  # 运行单个练习文件(npx tsx)
-```
-
-每天在仓库目录开一个新会话,对 Claude 说 **"学习 TS 第 N 课"** 即可继续——进度与错题本记录在 `progress.md`,规则在 `CLAUDE.md`。
-
-## 学习规则
-
-- **禁止代写**:Claude 只做陪练审阅、苏格拉底式引导、出题官
+- **禁止代写**:Claude 只做陪练审阅、苏格拉底式引导、出题官;用户问"帮我写 X"时只给提示和反问
 - **每课循环**:讲解 → 练习 → 审阅 → 自测
 - **错题必记**:类型错误与每次 `any` 都记入 `progress.md` 错题本
 - **strict 底线**:所有练习在 `strict: true` 下进行,不以改配置消错
@@ -34,9 +55,9 @@ npm run <文件路径>  # 运行单个练习文件(npx tsx)
 ## 目录结构
 
 ```
-├── CLAUDE.md          # Claude 使用规则与学习者画像
+├── CLAUDE.md          # Claude Code 使用规则与学习者画像(每个会话必读)
 ├── 课程大纲.md         # 30 课完整大纲
-├── progress.md        # 学习进度、错题本、any 记录、毕业自测
+├── progress.md        # 学习进度、错题本、any 记录、毕业自测(跨会话续学依据)
 ├── tsconfig.json      # strict 全开
 ├── lessons/           # 每课一个目录,练习代码
 └── vue-practice/      # (第 21 课起)Vue 3 类型实战项目
