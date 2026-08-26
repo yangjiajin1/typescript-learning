@@ -44,7 +44,7 @@ order1 = "pause"
 // Type '"over"' is not assignable to type 'OrderStatus'
 
 
-const config = { theme: "dark", size: "large" } as const
+const configOud = { theme: "dark", size: "large" } as const
 // type const = {
 //  readonly theme: "dark";
 //  readonly size: "large";
