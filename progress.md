@@ -1,13 +1,13 @@
 # 学习进度
 
 > 每个会话结束时由 Claude 更新。这是跨会话续学的唯一依据,必须保持准确。
-> 更新时间:2026-08-26(第 14 课完成)
+> 更新时间:2026-09-02(第 16 课完成)
 
 ## 学习者信息
 
 - 起点:A 档(JS/ES6+ 扎实,TS 未系统学过)
 - 目标:B 档(能写出好类型,克制 any)
-- 当前课程:第 14 课已完成,下一课第 15 课(索引签名、Record 与 keyof)
+- 当前课程:第 16 课已完成,下一课第 17 课(工具类型下:ReturnType/Parameters/Exclude/Extract/NonNullable)
 - 学习开始日期:2026-08-07
 
 ## 课程进度
@@ -28,8 +28,8 @@
 | 12 | 泛型入门 | ✅ | 2026-08-18 | 练习四任务全过,check 全绿;掌握 泛型&lt;T&gt; / 推断保留字面量(identity(42)→42) / extends 约束(keyof)/ T[K];first 全局重名改名 firstItem;自测 3 题全对 |
 | 13 | 泛型进阶 | ✅ | 2026-08-24 | 任务1-3全过(任务3卡点3个:方括号索引Map/new Map隐含any/新建数组漏元素);任务4默认参数三问初答偏题(默认值=最常用类型、约束vs默认值两轴、T是元素类型非分页参数),函数默认参数类比讲解后改正;自测题1漏a/c状态、题2默认值须满足约束答对;check全绿 |
 | 14 | 泛型实战 + 阶段复盘 | ✅ | 2026-08-26 | 任务1预测基本全对(②字段名笔误 value→error);任务2 Result+request 首版把 T 当元素致 value 成 [][] 双层数组(check 报错),改 T 承载整体后全绿;复盘改口头三连问;自测3题全对(题3 as T 边界断言理解到位) |
-| 15 | 索引签名、Record 与 keyof | ⬜ | | |
-| 16 | 工具类型(上) | ⬜ | | |
+| 15 | 索引签名、Record 与 keyof | ✅ | 2026-08-31 | 任务1预测全对(索引签名读值叠undefined/Record展开/keyof/泛型键T[K]);任务2①首版值类型误用 number(场景是 string 文案)已改对,Record 锁键 vs 索引签名放行体会到位;②getValue 泛型 T[K] 不叠 undefined(与任务1④具体类型 Dict 叠 undefined 对照);自测3题全对,零 any |
+| 16 | 工具类型(上) | ✅ | 2026-09-02 | 任务1预测基本全对(②a 填空漏了、④e 判断当前结构等价答反);手写 MyPartial/MyRequired/MyReadonly 与内置逐字一致;Pick/Omit 选型理由到位;EditDraft 嵌套方向对;自测 3 题全对;零 any |
 | 17 | 工具类型(下) | ⬜ | | |
 | 18 | 条件类型与 infer | ⬜ | | |
 | 19 | 声明文件 .d.ts | ⬜ | | |
@@ -66,6 +66,9 @@
 - [2026-08-24] 自测题1:判断 `Box<T=string>` 三个变量,只答 b 报错,漏说 a、c 都合法 → 只挑报错的答,没逐个覆盖 → 判断类型题要把每个选项过一遍:a(默认string/赋string)合法、b(默认string/赋number)报错、c(显式number/赋number)合法;漏"不报错的"也是覆盖不全
 - [2026-08-26] 任务1②:预测 err1 类型写成 `{ ok: false; value: string }`,字段名写成 value → 只想着"有个 string 字段",没核对字段名 → 字段名是类型结构的一部分,写错照样报错(bad2 撞的就是 "value 不在类型中";成功分支才是 value,失败分支是 error)
 - [2026-08-26] 任务2:request 首版签名 `request<T>(url, params: T[]): Promise<MyResult<T[], string>>`,把 T 当"单个元素",成功数据另套一层 T[],调用方又填 `{ id: number }[]`,叠加成 `{ id: number }[][]`,check 报 "id 不在 { id: number }[] 中" → 泛型参数的角色(元素 vs 整体)设计错 → T 应代表"成功数据整体"(`mock: T`,value 直接用 T);写完悬停看实际推断,check 绿 ≠ 类型对
+- [2026-08-31] 任务2①:statusAction 首版写成 `Record<OrderPhase, number>`、值填 1/2/1/1 → 场景是"下一步动作按钮文案"(应为 string),却随手建模成 number → 类型是对场景的建模,值类型由需求决定,不是随手挑的;check 绿 ≠ 场景对(与第 14 课"check 绿 ≠ 类型对"同一教训),先读需求再定类型
+- [2026-09-02] 任务1④e:判断 `Pick<User,'id'|'name'>` 与 `Omit<User,'email'>`"不等价" → 只凭"语义分工不同"下结论,没落到当前结构上:User 恰好 3 键,去掉 email 剩的正是 id+name,结构上相等、能互赋 → 判断等价先看结构(当前相等),再想演进(Pick=写死的保留名单,源加字段不变;Omit=开放差额,源加字段自动跟上;"当前撞车 ≠ 行为相同"与第 8 课"结果等价但行为边界不同"同类)
+- [2026-09-02] 自测题3:问 ApiResp 只留 code/message 该用 Pick 还是 Omit(现在两者都行),结论 Pick 对,但理由写成"因为不想要 data/extra、也就是想要 code/message" → "不想要哪些"本身也导向 Omit,单凭它判断会绕 → 判据是该类型是固定契约还是自动跟随源类型:前端展示"只要 code+message"是固定契约 → Pick 不让类型漂移;需要随源新增字段再考虑 Omit
 
 ## any 记录
 
