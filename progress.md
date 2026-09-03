@@ -1,13 +1,13 @@
 # 学习进度
 
 > 每个会话结束时由 Claude 更新。这是跨会话续学的唯一依据,必须保持准确。
-> 更新时间:2026-09-02(第 16 课完成)
+> 更新时间:2026-09-02(第 17 课完成)
 
 ## 学习者信息
 
 - 起点:A 档(JS/ES6+ 扎实,TS 未系统学过)
 - 目标:B 档(能写出好类型,克制 any)
-- 当前课程:第 16 课已完成,下一课第 17 课(工具类型下:ReturnType/Parameters/Exclude/Extract/NonNullable)
+- 当前课程:第 17 课已完成,下一课第 18 课(条件类型与 infer)
 - 学习开始日期:2026-08-07
 
 ## 课程进度
@@ -30,7 +30,7 @@
 | 14 | 泛型实战 + 阶段复盘 | ✅ | 2026-08-26 | 任务1预测基本全对(②字段名笔误 value→error);任务2 Result+request 首版把 T 当元素致 value 成 [][] 双层数组(check 报错),改 T 承载整体后全绿;复盘改口头三连问;自测3题全对(题3 as T 边界断言理解到位) |
 | 15 | 索引签名、Record 与 keyof | ✅ | 2026-08-31 | 任务1预测全对(索引签名读值叠undefined/Record展开/keyof/泛型键T[K]);任务2①首版值类型误用 number(场景是 string 文案)已改对,Record 锁键 vs 索引签名放行体会到位;②getValue 泛型 T[K] 不叠 undefined(与任务1④具体类型 Dict 叠 undefined 对照);自测3题全对,零 any |
 | 16 | 工具类型(上) | ✅ | 2026-09-02 | 任务1预测基本全对(②a 填空漏了、④e 判断当前结构等价答反);手写 MyPartial/MyRequired/MyReadonly 与内置逐字一致;Pick/Omit 选型理由到位;EditDraft 嵌套方向对;自测 3 题全对;零 any |
-| 17 | 工具类型(下) | ⬜ | | |
+| 17 | 工具类型(下) | ✅ | 2026-09-02 | 任务1预测全对(②async只剥一层拿Promise、③Parameters元组含可选undefined、④InstanceType、⑤集合三兄弟);任务2全对(①借类型三连零手抄、③UserList async拆两层、②b白名单Extract直觉对→讲解对比Exclude黑名单:源加状态时Exclude会漏新成员);自测3题:题1、题2全对,题3两处口误已纠正(函数是值非"不是值";typeof Class是构造器类型非实例,实例须InstanceType拆);check绿、运行对、零any。注:脚手架全局撞名(OrderState/const users)为讲师失误非用户错误,已记长期记忆防复发 |
 | 18 | 条件类型与 infer | ⬜ | | |
 | 19 | 声明文件 .d.ts | ⬜ | | |
 | 20 | tsconfig 解读与渐进加固 | ⬜ | | |
@@ -69,6 +69,8 @@
 - [2026-08-31] 任务2①:statusAction 首版写成 `Record<OrderPhase, number>`、值填 1/2/1/1 → 场景是"下一步动作按钮文案"(应为 string),却随手建模成 number → 类型是对场景的建模,值类型由需求决定,不是随手挑的;check 绿 ≠ 场景对(与第 14 课"check 绿 ≠ 类型对"同一教训),先读需求再定类型
 - [2026-09-02] 任务1④e:判断 `Pick<User,'id'|'name'>` 与 `Omit<User,'email'>`"不等价" → 只凭"语义分工不同"下结论,没落到当前结构上:User 恰好 3 键,去掉 email 剩的正是 id+name,结构上相等、能互赋 → 判断等价先看结构(当前相等),再想演进(Pick=写死的保留名单,源加字段不变;Omit=开放差额,源加字段自动跟上;"当前撞车 ≠ 行为相同"与第 8 课"结果等价但行为边界不同"同类)
 - [2026-09-02] 自测题3:问 ApiResp 只留 code/message 该用 Pick 还是 Omit(现在两者都行),结论 Pick 对,但理由写成"因为不想要 data/extra、也就是想要 code/message" → "不想要哪些"本身也导向 Omit,单凭它判断会绕 → 判据是该类型是固定契约还是自动跟随源类型:前端展示"只要 code+message"是固定契约 → Pick 不让类型漂移;需要随源新增字段再考虑 Omit
+- [2026-09-02] 自测题3:答"直接写 `ReturnType<createUser>` 报错因为函数不是值" → 函数恰恰是值(能 `createUser(...)` 调用),真正问题是类型位置要放"类型",而 `createUser` 是值名不是类型名 → 类型上下文想引用"某值对应的类型",必须先 `typeof 值名` 翻译;值与类型是两套名字(值空间/类型空间)
+- [2026-09-02] 自测题3:答"`typeof Account` 取实例" → `typeof Account` 拿到的是 class 整体类型(构造器签名),不含实例 → `typeof Class` ≠ 实例类型;实例要 `InstanceType<typeof Class>` 再拆一层,与"ReturnType 拿 Promise → Awaited 再拆"同套剥层思路
 
 ## any 记录
 
