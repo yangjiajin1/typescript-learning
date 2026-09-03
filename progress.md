@@ -1,13 +1,13 @@
 # 学习进度
 
 > 每个会话结束时由 Claude 更新。这是跨会话续学的唯一依据,必须保持准确。
-> 更新时间:2026-09-02(第 17 课完成)
+> 更新时间:2026-09-03(第 18 课完成)
 
 ## 学习者信息
 
 - 起点:A 档(JS/ES6+ 扎实,TS 未系统学过)
 - 目标:B 档(能写出好类型,克制 any)
-- 当前课程:第 17 课已完成,下一课第 18 课(条件类型与 infer)
+- 当前课程:第 18 课已完成,下一课第 19 课(声明文件与 @types)
 - 学习开始日期:2026-08-07
 
 ## 课程进度
@@ -31,6 +31,7 @@
 | 15 | 索引签名、Record 与 keyof | ✅ | 2026-08-31 | 任务1预测全对(索引签名读值叠undefined/Record展开/keyof/泛型键T[K]);任务2①首版值类型误用 number(场景是 string 文案)已改对,Record 锁键 vs 索引签名放行体会到位;②getValue 泛型 T[K] 不叠 undefined(与任务1④具体类型 Dict 叠 undefined 对照);自测3题全对,零 any |
 | 16 | 工具类型(上) | ✅ | 2026-09-02 | 任务1预测基本全对(②a 填空漏了、④e 判断当前结构等价答反);手写 MyPartial/MyRequired/MyReadonly 与内置逐字一致;Pick/Omit 选型理由到位;EditDraft 嵌套方向对;自测 3 题全对;零 any |
 | 17 | 工具类型(下) | ✅ | 2026-09-02 | 任务1预测全对(②async只剥一层拿Promise、③Parameters元组含可选undefined、④InstanceType、⑤集合三兄弟);任务2全对(①借类型三连零手抄、③UserList async拆两层、②b白名单Extract直觉对→讲解对比Exclude黑名单:源加状态时Exclude会漏新成员);自测3题:题1、题2全对,题3两处口误已纠正(函数是值非"不是值";typeof Class是构造器类型非实例,实例须InstanceType拆);check绿、运行对、零any。注:脚手架全局撞名(OrderState/const users)为讲师失误非用户错误,已记长期记忆防复发 |
+| 18 | 条件类型与 infer | ✅ | 2026-09-03 | 任务1预测:①a/b对、①c"多了判断"表述含糊(补:条件extends=可赋值性,与普通赋值同规则)、②a/b对、③Parameters源码猜中一字不差(③a方向对,补:元组因参数个数不定需列表表达);任务2三手写全对(MyReturnType与内置一字不差、UnwrapPromise两分支全、IsArray先用any[]→指出占位any后主动改unknown[],check仍绿);挑战题IsArray<string\|number[]>预测false漏分布式,实为boolean——已记错题本,讲解裸T/包住[T]对照后自测3题:题1✅(number\|string推理完整)、题2✅(无架子无形状,命中infer本质)、题3包住版AllStr<'a'\|42>=false✅(裸版boolean未实敲,机制此前已两推);check绿、运行对。文件尾部补"裸vs包住"四行复习对照 |
 | 18 | 条件类型与 infer | ⬜ | | |
 | 19 | 声明文件 .d.ts | ⬜ | | |
 | 20 | tsconfig 解读与渐进加固 | ⬜ | | |
@@ -71,12 +72,14 @@
 - [2026-09-02] 自测题3:问 ApiResp 只留 code/message 该用 Pick 还是 Omit(现在两者都行),结论 Pick 对,但理由写成"因为不想要 data/extra、也就是想要 code/message" → "不想要哪些"本身也导向 Omit,单凭它判断会绕 → 判据是该类型是固定契约还是自动跟随源类型:前端展示"只要 code+message"是固定契约 → Pick 不让类型漂移;需要随源新增字段再考虑 Omit
 - [2026-09-02] 自测题3:答"直接写 `ReturnType<createUser>` 报错因为函数不是值" → 函数恰恰是值(能 `createUser(...)` 调用),真正问题是类型位置要放"类型",而 `createUser` 是值名不是类型名 → 类型上下文想引用"某值对应的类型",必须先 `typeof 值名` 翻译;值与类型是两套名字(值空间/类型空间)
 - [2026-09-02] 自测题3:答"`typeof Account` 取实例" → `typeof Account` 拿到的是 class 整体类型(构造器签名),不含实例 → `typeof Class` ≠ 实例类型;实例要 `InstanceType<typeof Class>` 再拆一层,与"ReturnType 拿 Promise → Awaited 再拆"同套剥层思路
+- [2026-09-03] 挑战题:预测 `IsArray<string | number[]>` 得 false → 只把"整个联合"当一个东西判"是不是数组",没想起条件类型左侧是**裸 T** 时会分布式 → 裸类型参数 + 联合实参 = 联合被拆成成员逐个过、结果拼回联合:`string`→false、`number[]`→true → `boolean`(非 false);Exclude 能对联合逐个删也是这机制。判断"会不会分布式"就看左侧 T 是不是"光着"的;想关掉用 `[T]` 包住 = 整个联合当整体、一个不达标全盘否(`AllStr<'a'|42>`=false vs 裸版=boolean)
 
 ## any 记录
 
 > 格式:`- [日期] 场景:什么代码用了 any → 原因 → 是否已消除`
 
 - [2026-08-19] 场景:indexBy 的 reduce 初始值写 `new Map()`,被推断成 `Map<any, any>`,`per.set` 塞什么都放行,类型检查形同虚设 → 原因:没写 any 但任何默认推断给逃逸 → 是否已消除:是,显式写 `new Map<T[K], T[]>()` 后类型接管;教训:any 不一定是写出来的,可能从推断溜进来,`new Map()`/`new Set()` 等默认推断要显式标注
+- [2026-09-03] 场景:IsArray 手写写 `T extends any[] ? true : false`(any[])→ 原因是"凭感觉",想表达"数组元素类型不在乎" → 是否已消除:是,当场指出后主动改 `unknown[]`,check 仍绿(`unknown` = 我不知道/不在乎,正是该位置的语义);另 MyReturnType 假分支 `: any` 为官方 ReturnType 同款"死分支兜底"(约束门槛已拦非函数、到不了),保留与内置一致。教训:条件类型的**架子上**判"是不是数组/函数"不需要 any,用 `unknown[]` 即可零 any;占位 any(不进结果)≠ 逃逸 any(流进签名/返回值)——看 any 有没有被"吐出去"判断危险程度
 
 ## 20 项毕业能力自测清单
 
