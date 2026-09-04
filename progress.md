@@ -1,13 +1,13 @@
 # 学习进度
 
 > 每个会话结束时由 Claude 更新。这是跨会话续学的唯一依据,必须保持准确。
-> 更新时间:2026-09-03(第 18 课完成)
+> 更新时间:2026-09-04(第 20 课完成)
 
 ## 学习者信息
 
 - 起点:A 档(JS/ES6+ 扎实,TS 未系统学过)
 - 目标:B 档(能写出好类型,克制 any)
-- 当前课程:第 18 课已完成,下一课第 19 课(声明文件与 @types)
+- 当前课程:第 20 课已完成,下一课第 21 课(Vue3 环境与 ref/reactive 类型)
 - 学习开始日期:2026-08-07
 
 ## 课程进度
@@ -32,9 +32,8 @@
 | 16 | 工具类型(上) | ✅ | 2026-09-02 | 任务1预测基本全对(②a 填空漏了、④e 判断当前结构等价答反);手写 MyPartial/MyRequired/MyReadonly 与内置逐字一致;Pick/Omit 选型理由到位;EditDraft 嵌套方向对;自测 3 题全对;零 any |
 | 17 | 工具类型(下) | ✅ | 2026-09-02 | 任务1预测全对(②async只剥一层拿Promise、③Parameters元组含可选undefined、④InstanceType、⑤集合三兄弟);任务2全对(①借类型三连零手抄、③UserList async拆两层、②b白名单Extract直觉对→讲解对比Exclude黑名单:源加状态时Exclude会漏新成员);自测3题:题1、题2全对,题3两处口误已纠正(函数是值非"不是值";typeof Class是构造器类型非实例,实例须InstanceType拆);check绿、运行对、零any。注:脚手架全局撞名(OrderState/const users)为讲师失误非用户错误,已记长期记忆防复发 |
 | 18 | 条件类型与 infer | ✅ | 2026-09-03 | 任务1预测:①a/b对、①c"多了判断"表述含糊(补:条件extends=可赋值性,与普通赋值同规则)、②a/b对、③Parameters源码猜中一字不差(③a方向对,补:元组因参数个数不定需列表表达);任务2三手写全对(MyReturnType与内置一字不差、UnwrapPromise两分支全、IsArray先用any[]→指出占位any后主动改unknown[],check仍绿);挑战题IsArray<string\|number[]>预测false漏分布式,实为boolean——已记错题本,讲解裸T/包住[T]对照后自测3题:题1✅(number\|string推理完整)、题2✅(无架子无形状,命中infer本质)、题3包住版AllStr<'a'\|42>=false✅(裸版boolean未实敲,机制此前已两推);check绿、运行对。文件尾部补"裸vs包住"四行复习对照 |
-| 18 | 条件类型与 infer | ⬜ | | |
-| 19 | 声明文件 .d.ts | ⬜ | | |
-| 20 | tsconfig 解读与渐进加固 | ⬜ | | |
+| 19 | 声明文件 .d.ts | ✅ | 2026-09-03 | 任务1 预测+TS7016 抄译全对;任务2 首版变量 declare 漏 export、函数 export(受 auto-imports.d.ts 的 declare global 语境误导),实验钉死规则「被 import 的模块声明统一 export、declare 可省」;任务3 试错①②③全对;挑战 escapeHtml 预做:check 绿但运行崩 → 声明必须忠实于实现;自测 Q1(declare module 场景)/Q2(三斜线)补讲后确认题过、Q3 对;全程零 any;新结构为多文件(main.ts + string-utils.js + .d.ts),运行命令是 npx tsx .../main.ts |
+| 20 | tsconfig 解读与渐进加固 | ✅ | 2026-09-04 | 用户主动定位为"了解级/现查知识",撤掉「抄 tsconfig 逐项写注释」的写文件作业(合理减负,已记学习偏好防复发);口语快查 4 题全对:数出 strictNullChecks/useUnknownInCatchVariables/noImplicitAny 且作用全对(其余 strict 旋钮低频定位现查)、noUncheckedIndexedAccess 非 strict 成员且答"管越界 undefined"、target=编译语法版本/module=模块格式、渐进先 noImplicitAny 抓隐式再啃 strictNullChecks(策略到位);无真实 TS 工作项目可读,读项目实战环节跳过、留待 Vue 部分真配置;零 any、零错题 |
 | 21 | Vue3 环境与 ref/reactive 类型 | ⬜ | | |
 | 22 | defineProps/defineEmits 类型 | ⬜ | | |
 | 23 | v-model 与 defineModel | ⬜ | | |
@@ -73,6 +72,8 @@
 - [2026-09-02] 自测题3:答"直接写 `ReturnType<createUser>` 报错因为函数不是值" → 函数恰恰是值(能 `createUser(...)` 调用),真正问题是类型位置要放"类型",而 `createUser` 是值名不是类型名 → 类型上下文想引用"某值对应的类型",必须先 `typeof 值名` 翻译;值与类型是两套名字(值空间/类型空间)
 - [2026-09-02] 自测题3:答"`typeof Account` 取实例" → `typeof Account` 拿到的是 class 整体类型(构造器签名),不含实例 → `typeof Class` ≠ 实例类型;实例要 `InstanceType<typeof Class>` 再拆一层,与"ReturnType 拿 Promise → Awaited 再拆"同套剥层思路
 - [2026-09-03] 挑战题:预测 `IsArray<string | number[]>` 得 false → 只把"整个联合"当一个东西判"是不是数组",没想起条件类型左侧是**裸 T** 时会分布式 → 裸类型参数 + 联合实参 = 联合被拆成成员逐个过、结果拼回联合:`string`→false、`number[]`→true → `boolean`(非 false);Exclude 能对联合逐个删也是这机制。判断"会不会分布式"就看左侧 T 是不是"光着"的;想关掉用 `[T]` 包住 = 整个联合当整体、一个不达标全盘否(`AllStr<'a'|42>`=false vs 裸版=boolean)
+- [2026-09-03] 任务2 写 string-utils.d.ts:变量写 `declare const version`(无 export)、函数写 `export function`,把 export/declare 当成"函数用/变量用"的分工 → 参考了 auto-imports.d.ts(它站在 `declare global{}` 块内,declare 隐含、const 天然是全局声明),把"全局声明语境"的写法误搬到"模块声明" → export 管"进不进模块对外接口"、declare 管"是否纯类型声明",两根独立轴;被 import 的模块 .d.ts 每个导出都写 export、declare 可省(官方模板 `export declare` 亦可);先问"这符号是 import 用还是全局直接用"再选声明形态
+- [2026-09-03] 自测 Q1:declare module 的应用场景答不上("不太清楚")→ 没分清「裸包 import(无自带类型又无 @types)」与「相对路径 import(有真 JS、同名 .d.ts 配对)」是两条不同的类型供给路径 → 裸包且无人供类型 → 在任意 .d.ts 用 `declare module '包名' { ... }` 无中生有声明模块(背后无可配对的 .d.ts,用字符串模块名当锚点);相对路径有真 JS → 同名 .d.ts + export;全局免 import 用 declare global;确认题(老 xlsx 包 → declare module 'xlsx')已答对翻篇
 
 ## any 记录
 
