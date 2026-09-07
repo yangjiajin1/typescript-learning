@@ -1,13 +1,13 @@
 # 学习进度
 
 > 每个会话结束时由 Claude 更新。这是跨会话续学的唯一依据,必须保持准确。
-> 更新时间:2026-09-04(第 20 课完成)
+> 更新时间:2026-09-07(第 21 课完成)
 
 ## 学习者信息
 
 - 起点:A 档(JS/ES6+ 扎实,TS 未系统学过)
 - 目标:B 档(能写出好类型,克制 any)
-- 当前课程:第 20 课已完成,下一课第 21 课(Vue3 环境与 ref/reactive 类型)
+- 当前课程:第 21 课已完成,下一课第 22 课(defineProps/defineEmits 类型)
 - 学习开始日期:2026-08-07
 
 ## 课程进度
@@ -34,7 +34,7 @@
 | 18 | 条件类型与 infer | ✅ | 2026-09-03 | 任务1预测:①a/b对、①c"多了判断"表述含糊(补:条件extends=可赋值性,与普通赋值同规则)、②a/b对、③Parameters源码猜中一字不差(③a方向对,补:元组因参数个数不定需列表表达);任务2三手写全对(MyReturnType与内置一字不差、UnwrapPromise两分支全、IsArray先用any[]→指出占位any后主动改unknown[],check仍绿);挑战题IsArray<string\|number[]>预测false漏分布式,实为boolean——已记错题本,讲解裸T/包住[T]对照后自测3题:题1✅(number\|string推理完整)、题2✅(无架子无形状,命中infer本质)、题3包住版AllStr<'a'\|42>=false✅(裸版boolean未实敲,机制此前已两推);check绿、运行对。文件尾部补"裸vs包住"四行复习对照 |
 | 19 | 声明文件 .d.ts | ✅ | 2026-09-03 | 任务1 预测+TS7016 抄译全对;任务2 首版变量 declare 漏 export、函数 export(受 auto-imports.d.ts 的 declare global 语境误导),实验钉死规则「被 import 的模块声明统一 export、declare 可省」;任务3 试错①②③全对;挑战 escapeHtml 预做:check 绿但运行崩 → 声明必须忠实于实现;自测 Q1(declare module 场景)/Q2(三斜线)补讲后确认题过、Q3 对;全程零 any;新结构为多文件(main.ts + string-utils.js + .d.ts),运行命令是 npx tsx .../main.ts |
 | 20 | tsconfig 解读与渐进加固 | ✅ | 2026-09-04 | 用户主动定位为"了解级/现查知识",撤掉「抄 tsconfig 逐项写注释」的写文件作业(合理减负,已记学习偏好防复发);口语快查 4 题全对:数出 strictNullChecks/useUnknownInCatchVariables/noImplicitAny 且作用全对(其余 strict 旋钮低频定位现查)、noUncheckedIndexedAccess 非 strict 成员且答"管越界 undefined"、target=编译语法版本/module=模块格式、渐进先 noImplicitAny 抓隐式再啃 strictNullChecks(策略到位);无真实 TS 工作项目可读,读项目实战环节跳过、留待 Vue 部分真配置;零 any、零错题 |
-| 21 | Vue3 环境与 ref/reactive 类型 | ⬜ | | |
+| 21 | Vue3 环境与 ref/reactive 类型 | ✅ | 2026-09-07 | 建 vue-practice(Vite vue-ts 模板,独立 tsconfig,vue-tsc -b 基线绿);讲解 ref/reactive/computed 推导 + 显式 Ref&lt;T&gt; 两场景 + 解包规则;练习四任务+加分题全过:ref(0)→Ref&lt;number&gt;、reactive 无 .value 且按字面量锁死形状(运行时加属性报错,连回第15课索引签名对比)、computed→ComputedRef 只读、加分题 reactive({ref}) 自动解包成原始值类型且响应式仍活、模板 ref 用 ref&lt;HTMLInputElement\|null&gt;(null)+?. 判空(null! 克制);自测3题核心全对,题2表述把完整类型当裸类型(ComputedRef&lt;boolean&gt; 说成 boolean)已口头补正:「完整类型带 Ref/ComputedRef 壳,裸 T 只出现在 .value 与模板解包处」;零 any、零新错题 |
 | 22 | defineProps/defineEmits 类型 | ⬜ | | |
 | 23 | v-model 与 defineModel | ⬜ | | |
 | 24 | 数据层类型实践 | ⬜ | | |
